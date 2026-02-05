@@ -4,7 +4,6 @@ displayName: "Appwrite Backend Platform"
 description: "Build backend services with Appwrite - databases, authentication, storage, functions, and messaging for web and mobile apps"
 keywords: ["appwrite", "backend", "database", "auth", "authentication", "storage", "functions", "serverless", "baas", "api", "users", "teams", "messaging"]
 author: "Appwrite"
-version: "1.0.0"
 ---
 
 # Onboarding
