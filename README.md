@@ -2,9 +2,12 @@
 
 A comprehensive Kiro power for building backend services with Appwrite - databases, authentication, storage, functions, and messaging for web and mobile applications.
 
-[![License](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg)](LICENSE)
+**Now with MCP Server 2.0!** Zero configuration, automatic service discovery, and minimal context usage.
+
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Kiro IDE](https://img.shields.io/badge/Kiro-IDE-purple.svg)](https://kiro.dev)
 [![Appwrite](https://img.shields.io/badge/Appwrite-Backend-f02e65.svg)](https://appwrite.io)
+[![MCP Server](https://img.shields.io/badge/MCP-2.0-green.svg)](https://github.com/appwrite/mcp-for-api)
 
 ## 🚀 Quick Start
 
@@ -23,7 +26,7 @@ Or install from local path:
 ### Prerequisites
 
 **For API Server:**
-- [uv](https://docs.astral.sh/uv/getting-started/installation/) - Python package manager
+- [uv](https://docs.astral.sh/uv/getting-started/installation/) - Python package manager (version 0.4.1+)
 - Appwrite project with API key
 
 **For Docs Server:**
@@ -58,21 +61,39 @@ Or install from local path:
 
 ## 📚 What's Included
 
+### MCP Server 2.0 Architecture
+
+**Revolutionary Two-Tool Design:**
+- Only 2 tools exposed to the model: `appwrite_search_tools` and `appwrite_call_tool`
+- Full Appwrite catalog stays internal and is searched at runtime
+- Minimal context usage - more room for your code
+- Zero configuration - no service flags needed
+- Automatic service discovery - all APIs available by default
+
 ### Dual MCP Servers
 
-#### 1. Appwrite API Server
+#### 1. Appwrite API Server (v0.4.1+)
 Direct interaction with Appwrite services through Python-based MCP server.
 
-**Default**: Databases API only (minimal context usage)
+**What's New in 2.0:**
+- ✅ **No more service flags** - Remove `--users`, `--storage`, `--functions`, etc.
+- ✅ **All services enabled** - Databases, users, storage, functions, messaging, sites, teams
+- ✅ **Compact architecture** - Only 2 MCP tools instead of dozens
+- ✅ **Smart search** - AI finds the right tool based on natural language
+- ✅ **Validation on startup** - Credentials checked when server starts
 
-**Enable Additional APIs** with command-line flags:
-- `--users` - User management and authentication
-- `--storage` - File upload, download, and management
-- `--functions` - Serverless function deployment
-- `--messaging` - Email, SMS, and push notifications
-- `--sites` - Static site and SSR deployment
-- `--teams` - Team and membership management
-- `--all` - Enable all APIs
+**Migration from v1.x:**
+```json
+// OLD (v1.x) - Don't use this anymore
+{
+  "args": ["mcp-server-appwrite", "--users", "--storage", "--functions"]
+}
+
+// NEW (v2.0) - Use this instead
+{
+  "args": ["mcp-server-appwrite"]
+}
+```
 
 #### 2. Appwrite Docs Server
 Query Appwrite documentation for guidance, API references, and code examples.
@@ -89,6 +110,14 @@ Query Appwrite documentation for guidance, API references, and code examples.
 
 ## 🎯 Features
 
+### MCP Server 2.0 Benefits
+- **Zero Configuration**: No service flags needed - everything works automatically
+- **Minimal Context**: Two-tool architecture uses less context than v1.x
+- **Natural Language**: Search for tools using conversational queries
+- **All Services**: Databases, users, storage, functions, messaging, sites, teams - all available
+- **Smart Discovery**: AI automatically finds the right tool for your task
+- **Startup Validation**: Credentials validated when server starts, not on first call
+
 ### Automatic Activation
 The power activates when you mention these keywords:
 - appwrite, backend, database
@@ -98,97 +127,51 @@ The power activates when you mention these keywords:
 
 ### Comprehensive Documentation
 - Step-by-step onboarding
-- Tool usage examples
+- MCP 2.0 migration guide
+- Natural language usage examples
 - Complete workflows
 - Best practices guide
 - Troubleshooting tips
 
-### Modular Design
-Enable only the APIs you need to minimize context usage and improve performance.
-
 ## 📖 Usage Examples
 
-### Create a Database
+### Natural Language Queries (MCP 2.0)
 
 ```javascript
-// Create database
-await mcp_appwrite_api_databases_create({
-  "database_id": "main",
-  "name": "Main Database",
-  "enabled": true
-})
+// Just ask in natural language - AI handles the rest!
 
-// Create collection
-await mcp_appwrite_api_databases_create_collection({
-  "database_id": "main",
-  "collection_id": "posts",
-  "name": "Blog Posts",
-  "permissions": ["read(\"any\")"]
-})
+"Create a database called 'production'"
+// AI searches for and calls: databases_create
 
-// Add attributes
-await mcp_appwrite_api_databases_create_string_attribute({
-  "database_id": "main",
-  "collection_id": "posts",
-  "key": "title",
-  "size": 255,
-  "required": true
-})
+"Add a user with email john@example.com"
+// AI searches for and calls: users_create
+
+"Upload avatar.jpg to the avatars bucket"
+// AI searches for and calls: storage_create_file
+
+"List all users in my project"
+// AI searches for and calls: users_list
+
+"Deploy my function code"
+// AI searches for and calls: functions_create_deployment
 ```
 
-### Manage Users
+### Traditional API Calls (Still Supported)
 
 ```javascript
-// Create user
-await mcp_appwrite_api_users_create({
-  "user_id": "unique()",
-  "email": "user@example.com",
-  "password": "SecurePass123!",
-  "name": "John Doe"
+// Search for the right tool
+appwrite_search_tools({
+  "query": "create a new database"
 })
 
-// List users
-await mcp_appwrite_api_users_list({
-  "queries": ["limit(25)"],
-  "search": "john"
-})
-```
-
-### Upload Files
-
-```javascript
-// Create storage bucket
-await mcp_appwrite_api_storage_create_bucket({
-  "bucket_id": "avatars",
-  "name": "User Avatars",
-  "permissions": ["read(\"any\")"],
-  "maximum_file_size": 5000000
-})
-
-// Upload file
-await mcp_appwrite_api_storage_create_file({
-  "bucket_id": "avatars",
-  "file_id": "unique()",
-  "file": "/path/to/avatar.jpg"
-})
-```
-
-### Deploy Functions
-
-```javascript
-// Create function
-await mcp_appwrite_api_functions_create({
-  "function_id": "unique()",
-  "name": "Process Payment",
-  "runtime": "node-18.0",
-  "execute": ["any"]
-})
-
-// Create deployment
-await mcp_appwrite_api_functions_create_deployment({
-  "function_id": func.id,
-  "code": "/path/to/function.tar.gz",
-  "activate": true
+// Call the tool
+appwrite_call_tool({
+  "tool_name": "databases_create",
+  "arguments": {
+    "database_id": "main",
+    "name": "Main Database",
+    "enabled": true
+  }
 })
 ```
 
@@ -206,7 +189,7 @@ appwrite-power/
 
 ## 🔧 Configuration
 
-### Minimal Configuration (Databases Only)
+### Minimal Configuration (MCP Server 2.0)
 
 ```json
 {
@@ -224,21 +207,14 @@ appwrite-power/
 }
 ```
 
-### Full Configuration (All Services)
+### Full Configuration (API + Docs)
 
 ```json
 {
   "mcpServers": {
     "appwrite-api": {
       "command": "uvx",
-      "args": [
-        "mcp-server-appwrite",
-        "--users",
-        "--storage",
-        "--functions",
-        "--messaging",
-        "--sites"
-      ],
+      "args": ["mcp-server-appwrite"],
       "env": {
         "APPWRITE_PROJECT_ID": "${APPWRITE_PROJECT_ID}",
         "APPWRITE_API_KEY": "${APPWRITE_API_KEY}",
@@ -252,6 +228,8 @@ appwrite-power/
   }
 }
 ```
+
+**Important:** If upgrading from v1.x, **remove all service flags** (`--users`, `--storage`, `--functions`, etc.). They are no longer needed or supported.
 
 ## 📚 Documentation
 
@@ -291,12 +269,15 @@ Contributions are welcome! Please feel free to submit issues or pull requests.
 
 ## 📝 Best Practices
 
+- **Use natural language** - MCP 2.0 understands conversational queries
+- **All services available** - No need to configure specific services
 - **Use document-level permissions** for fine-grained access control
 - **Create indexes** for frequently queried attributes
 - **Enable document security** on collections with sensitive data
 - **Use transactions** for atomic multi-document operations
 - **Store sensitive data** in environment variables
 - **Test with sandbox** before production deployment
+- **Upgrade from v1.x** - Remove all service flags from configuration
 
 See [steering/steering.md](steering/steering.md) for comprehensive best practices.
 
@@ -304,6 +285,9 @@ See [steering/steering.md](steering/steering.md) for comprehensive best practice
 
 - [Appwrite Website](https://appwrite.io)
 - [Appwrite Documentation](https://appwrite.io/docs)
+- [MCP Server 2.0 Announcement](https://appwrite.io/blog/post/announcing-appwrite-mcp-server-2)
+- [MCP Server GitHub](https://github.com/appwrite/mcp-for-api)
+- [MCP Server on PyPI](https://pypi.org/project/mcp-server-appwrite/)
 - [Appwrite GitHub](https://github.com/appwrite/appwrite)
 - [Appwrite Discord](https://appwrite.io/discord)
 - [Kiro IDE](https://kiro.dev)
@@ -311,11 +295,11 @@ See [steering/steering.md](steering/steering.md) for comprehensive best practice
 
 ## 📄 License
 
-This project is licensed under the BSD-3-Clause License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
-- [Appwrite Team](https://appwrite.io) for the amazing backend platform
+- [Appwrite Team](https://appwrite.io) for the amazing backend platform and MCP Server 2.0
 - [Kiro IDE Team](https://kiro.dev) for the powerful development environment
 - MCP (Model Context Protocol) for enabling seamless integrations
 
