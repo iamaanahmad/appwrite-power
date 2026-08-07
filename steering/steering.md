@@ -1,83 +1,22 @@
 # Appwrite Best Practices
 
-This guide provides best practices for building applications with Appwrite, including guidance for using MCP Server 2.0.
+This guide provides implementation and security guidance for Appwrite applications.
 
-## MCP Server 2.0 Usage
+## Using the hosted Appwrite MCP server
 
-### Natural Language Queries
+For Appwrite Cloud, this power uses the hosted `https://mcp.appwrite.io/` server. On first connection, authorize through the browser with Appwrite OAuth. The hosted server includes project operations, workspace context, and Appwrite documentation search; do not configure an MCP API key for it.
 
-**Use conversational language to interact with Appwrite:**
+Use clear, scoped natural-language requests such as:
 
-```javascript
-// ✅ Good: Natural language queries
-"Create a database called 'production' with a 'users' collection"
-"Add a user with email john@example.com and password SecurePass123"
-"Upload profile.jpg to the avatars bucket"
-"List all documents in the posts collection where status is published"
-
-// The AI will automatically:
-// 1. Search for the right tool using appwrite_search_tools
-// 2. Execute the operation using appwrite_call_tool
-// 3. Return the result
+```text
+Create a database named production with a users collection
+List documents in the posts collection where status is published
+Show me how to configure a storage bucket with restricted access
 ```
 
-### Understanding the Two-Tool Architecture
+Before mutations, confirm the target organization, project, and resource IDs. If your client exposes MCP tools, use the workspace context or operation search result to verify scope and required parameters before making the call.
 
-**How MCP 2.0 works:**
-
-1. **Search Phase**: AI uses `appwrite_search_tools` with your natural language query
-2. **Discovery Phase**: Server searches internal catalog and returns matching tool definitions
-3. **Execution Phase**: AI calls `appwrite_call_tool` with the specific tool name and parameters
-4. **Result Phase**: Server executes and returns the result
-
-```javascript
-// Example flow:
-User: "Create a new user"
-↓
-AI: appwrite_search_tools({ query: "create user" })
-↓
-Server: Returns tool definition for "users_create"
-↓
-AI: appwrite_call_tool({ 
-  tool_name: "users_create",
-  arguments: { email: "...", password: "..." }
-})
-↓
-Server: Executes and returns user creation result
-```
-
-### Migration from v1.x
-
-**Remove all service flags from your configuration:**
-
-```json
-// ❌ Bad: Old v1.x configuration
-{
-  "args": [
-    "mcp-server-appwrite",
-    "--users",
-    "--storage",
-    "--functions",
-    "--messaging"
-  ]
-}
-
-// ✅ Good: New v2.0 configuration
-{
-  "args": ["mcp-server-appwrite"]
-}
-```
-
-**All services are now automatically available:**
-- Databases
-- Users
-- Storage
-- Functions
-- Messaging
-- Sites
-- Teams
-- Locale
-- Avatars
+For a self-hosted Appwrite instance, use the local `mcp-server-appwrite` configuration documented in [Appwrite's self-hosted MCP guide](https://appwrite.io/docs/advanced/self-hosting/mcp). It uses an API key and explicit service flags; enable only the APIs your workflow needs.
 
 ## Database Design
 
