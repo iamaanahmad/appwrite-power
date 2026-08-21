@@ -4,7 +4,6 @@ displayName: "Appwrite Backend Platform"
 description: "Build and manage Appwrite Cloud backends with authentication, databases, storage, functions, messaging, sites, and current Appwrite documentation."
 keywords: ["appwrite", "backend", "database", "auth", "authentication", "storage", "functions", "serverless", "baas", "api", "users", "sites", "messaging"]
 author: "Appwrite"
-version: "3.0.0"
 ---
 
 # Appwrite Backend Platform
@@ -42,9 +41,13 @@ After authorization, ask for the operation or documentation you need. For exampl
 - “Get the details of my portfolio site from Appwrite.”
 - “Show me how to subscribe to user-creation events in real time.”
 
-## Hosted server capabilities
+## Available MCP Servers
 
-The Appwrite MCP server gives your AI client access to:
+### appwrite
+
+The single `appwrite` server at `https://mcp.appwrite.io/` uses HTTP transport and browser-based OAuth. It combines Appwrite Cloud project operations, workspace context, and current documentation search. Kiro loads this server from `mcp.json`; no local package, headers, environment variables, or API key are required.
+
+The server gives Kiro access to:
 
 - Appwrite Cloud project operations, including users, databases, storage, functions, messaging, sites, teams, and other supported services.
 - Current Appwrite documentation and SDK/API guidance through semantic search.
@@ -58,6 +61,10 @@ The server initially exposes a compact set of tools and discovers its full opera
 - `appwrite_search_docs` — search Appwrite documentation semantically.
 
 Use a context or search tool before calling a detailed project operation when your client exposes these tools directly. Follow the returned schema exactly, and request the minimum necessary resource access.
+
+## Available Steering Files
+
+- `steering/steering.md` — Load on demand for detailed Appwrite guidance covering database schemas and indexes, permissions, user management, storage, functions, real-time subscriptions, error handling, performance, testing, monitoring, and production-readiness practices.
 
 ## Safety and implementation guidance
 
