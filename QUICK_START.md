@@ -1,68 +1,59 @@
 # Appwrite MCP Quick Start for Kiro
 
+This power includes two selectable servers. Use only the one that targets your current project.
+
 ## Appwrite Cloud
 
-### 1. Have an Appwrite Cloud project
+1. Create or choose a project in the [Appwrite Cloud console](https://cloud.appwrite.io).
+2. In **Kiro panel → MCP servers**, leave `appwrite-cloud` enabled and `appwrite-self-hosted` disabled.
+3. Connect `appwrite-cloud` and complete Appwrite OAuth in the browser.
+4. Ask Kiro for workspace context, then name the intended project in your request.
 
-Create or choose a project in the [Appwrite Cloud console](https://cloud.appwrite.io).
-
-### 2. Connect the hosted MCP server
-
-This power configures:
-
-```json
-{
-  "mcpServers": {
-    "appwrite": {
-      "url": "https://mcp.appwrite.io/"
-    }
-  }
-}
-```
-
-On the first connection, your browser opens for Appwrite OAuth authorization. Sign in and grant access. No local installation, API key, project ID, or endpoint environment variable is needed.
-
-### 3. Ask Kiro to work with Appwrite
+No local installation, API key, project ID variable, or endpoint variable is needed.
 
 ```text
-List users in my Appwrite project
-Create a database named main
-Get the details of my portfolio site from Appwrite
-Show me how to set up real-time subscriptions that trigger when a user is created
+Using appwrite-cloud, list my Appwrite projects
+Using appwrite-cloud, create a database named main in project PROJECT_ID
+Search the Appwrite documentation for real-time subscriptions
 ```
 
-The hosted server provides Appwrite project access and semantic documentation search. It discovers detailed Appwrite operations at runtime to keep the initial MCP tool surface compact.
+## Self-hosted Appwrite
 
-## If you run Appwrite yourself
+1. Install [uv](https://docs.astral.sh/uv/getting-started/installation/).
+2. Create an API key with only the scopes needed for the target project.
+3. Set these variables in the environment that launches Kiro:
 
-The hosted endpoint is for Appwrite Cloud. Self-hosted instances require Appwrite's local stdio server, an API key, your project ID, and the instance endpoint:
-
-```json
-{
-  "mcpServers": {
-    "appwrite": {
-      "command": "uvx",
-      "args": ["mcp-server-appwrite", "--users"],
-      "env": {
-        "APPWRITE_PROJECT_ID": "your-project-id",
-        "APPWRITE_API_KEY": "your-api-key",
-        "APPWRITE_ENDPOINT": "https://your-appwrite-domain/v1"
-      }
-    }
-  }
-}
+```powershell
+$env:APPWRITE_PROJECT_ID="your-project-id"
+$env:APPWRITE_API_KEY="your-api-key"
+$env:APPWRITE_ENDPOINT="https://your-appwrite-domain/v1"
 ```
 
-The local server enables database tools by default. Add only the service flags you need, such as `--users`, `--storage`, or `--functions`.
+4. In **Kiro panel → MCP servers**, disable `appwrite-cloud`, approve the variable names if prompted, and enable `appwrite-self-hosted`.
+5. Confirm the endpoint and project ID before issuing mutations.
+
+```text
+Using appwrite-self-hosted, list databases in the configured project
+Using appwrite-self-hosted, list users in the configured project
+```
+
+The bundled server starts `uvx mcp-server-appwrite --all`. If this exposes more tools than needed, install a local copy of the power and replace `--all` with specific flags such as `--tablesdb`, `--users`, `--storage`, or `--functions`.
+
+## Switching projects or deployments
+
+1. Disable both Appwrite MCP servers.
+2. For self-hosted Appwrite, update the three environment variables before reconnecting.
+3. Enable only the server for the intended target.
+4. Retrieve or verify project context before making changes.
 
 ## Troubleshooting
 
-- **Authorization does not finish:** reconnect the MCP server and complete the browser sign-in and consent flow.
-- **Wrong project is selected:** ask Kiro to retrieve Appwrite workspace context, then specify the project or organization.
-- **An operation fails:** confirm the authenticated account has access and use the server-provided parameter schema. On self-hosted instances, verify API-key scopes and service flags.
+- **Cloud authorization does not finish:** reconnect `appwrite-cloud` and complete browser consent.
+- **Self-hosted server does not start:** verify `uv`, environment variables, approved variable names, endpoint format, and API-key scopes.
+- **Wrong project appears:** disable both servers, verify the target configuration, and reconnect only the intended server.
+- **Too many tools:** replace self-hosted `--all` with specific service flags in a local copy of the power.
 
 ## Learn more
 
-- [Appwrite MCP overview](https://appwrite.io/docs/tooling/ai/mcp-servers/)
-- [Hosted server details](https://appwrite.io/docs/tooling/ai/mcp-servers/api)
-- [Self-hosted server setup](https://appwrite.io/docs/advanced/self-hosting/mcp)
+- [Appwrite Cloud MCP server](https://appwrite.io/docs/tooling/ai/mcp-servers/api)
+- [Self-hosted MCP server](https://appwrite.io/docs/advanced/self-hosting/mcp)

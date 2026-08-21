@@ -2,11 +2,16 @@
 
 This guide provides implementation and security guidance for Appwrite applications.
 
-## Using the hosted Appwrite MCP server
+## Selecting an Appwrite MCP server
 
-For Appwrite Cloud, this power uses the hosted `https://mcp.appwrite.io/` server. On first connection, authorize through the browser with Appwrite OAuth. The hosted server includes project operations, workspace context, and Appwrite documentation search; do not configure an MCP API key for it.
+This power includes two named servers:
 
-Use clear, scoped natural-language requests such as:
+- `appwrite-cloud` uses `https://mcp.appwrite.io/` with browser-based OAuth and is enabled by default.
+- `appwrite-self-hosted` uses local `uvx mcp-server-appwrite` with `APPWRITE_PROJECT_ID`, `APPWRITE_API_KEY`, and `APPWRITE_ENDPOINT`; it is disabled by default.
+
+Keep only the server for the intended project enabled. Switch servers from **Kiro panel → MCP servers**. Before enabling the self-hosted server, set and approve its environment-variable names; never place actual credentials in the power configuration.
+
+Use clear, scoped natural-language requests that name the target server, deployment, and project when relevant:
 
 ```text
 Create a database named production with a users collection
@@ -14,9 +19,7 @@ List documents in the posts collection where status is published
 Show me how to configure a storage bucket with restricted access
 ```
 
-Before mutations, confirm the target organization, project, and resource IDs. If your client exposes MCP tools, use the workspace context or operation search result to verify scope and required parameters before making the call.
-
-For a self-hosted Appwrite instance, use the local `mcp-server-appwrite` configuration documented in [Appwrite's self-hosted MCP guide](https://appwrite.io/docs/advanced/self-hosting/mcp). It uses an API key and explicit service flags; enable only the APIs your workflow needs.
+Before mutations, confirm the active MCP server, deployment, organization, project, and resource IDs. For Cloud, use workspace context or operation search to verify scope and required parameters. For self-hosted Appwrite, verify the configured endpoint and project ID before calling tools.
 
 ## Database Design
 
