@@ -44,7 +44,7 @@ The bundled configuration is:
     },
     "appwrite-self-hosted": {
       "command": "uvx",
-      "args": ["mcp-server-appwrite", "--all"],
+      "args": ["mcp-server-appwrite"],
       "env": {
         "APPWRITE_PROJECT_ID": "${APPWRITE_PROJECT_ID}",
         "APPWRITE_API_KEY": "${APPWRITE_API_KEY}",
@@ -75,7 +75,7 @@ No API key, endpoint variable, local package, or separate documentation server b
 
 ### appwrite-self-hosted
 
-The local stdio server connects directly to one self-hosted project using the configured endpoint and API key. The bundled `--all` flag enables all supported Appwrite APIs. To reduce tool-context use, customize the local power before installation and replace `--all` with only the needed flags, such as `--tablesdb`, `--users`, `--teams`, `--storage`, `--functions`, or `--messaging`. Database tools are enabled by default when no service flags are supplied.
+The local stdio server connects directly to one self-hosted project using the configured endpoint and API key. As of version 2.0, the server uses a compact, two-tool architecture (`appwrite_search_tools` and `appwrite_call_tool`) that supports all Appwrite services automatically without requiring custom configuration flags. This dynamic dispatch model minimizes tool-context use out of the box.
 
 Do not commit actual credentials to `mcp.json`; keep them in approved environment variables. The self-hosted server does not provide the hosted Cloud server's OAuth flow or integrated semantic documentation search.
 
@@ -118,10 +118,6 @@ Verify that `uv` is installed, the three environment variables are set in Kiro's
 ### The wrong project or deployment appears
 
 Disable both Appwrite servers, then enable only the intended one. For Cloud, request workspace context and specify the project. For self-hosted, verify `APPWRITE_PROJECT_ID` and `APPWRITE_ENDPOINT` before reconnecting.
-
-### Too many self-hosted tools are loaded
-
-Replace `--all` in the locally installed power configuration with only the service flags needed for that workflow, then reconnect the server.
 
 ## Resources
 

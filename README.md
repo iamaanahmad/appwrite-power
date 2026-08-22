@@ -29,7 +29,7 @@ Cloud requires no `uv` installation, MCP API key, endpoint variable, or separate
 4. In **Kiro panel → MCP servers**, disable `appwrite-cloud`, approve the environment-variable names if prompted, and enable `appwrite-self-hosted`.
 5. Confirm the endpoint and project before making changes.
 
-The bundled self-hosted server uses `--all` for broad API coverage. For a smaller tool surface, replace `--all` in a local copy of the power with only the required service flags before installation.
+The bundled self-hosted server uses a compact two-tool architecture that supports all Appwrite APIs automatically, minimizing tool-context use.
 
 ## Included configuration
 
@@ -42,7 +42,7 @@ The bundled self-hosted server uses `--all` for broad API coverage. For a smalle
     },
     "appwrite-self-hosted": {
       "command": "uvx",
-      "args": ["mcp-server-appwrite", "--all"],
+      "args": ["mcp-server-appwrite"],
       "env": {
         "APPWRITE_PROJECT_ID": "${APPWRITE_PROJECT_ID}",
         "APPWRITE_API_KEY": "${APPWRITE_API_KEY}",

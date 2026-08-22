@@ -37,7 +37,7 @@ Using appwrite-self-hosted, list databases in the configured project
 Using appwrite-self-hosted, list users in the configured project
 ```
 
-The bundled server starts `uvx mcp-server-appwrite --all`. If this exposes more tools than needed, install a local copy of the power and replace `--all` with specific flags such as `--tablesdb`, `--users`, `--storage`, or `--functions`.
+The bundled server starts `uvx mcp-server-appwrite`. The compact two-tool architecture supports all Appwrite APIs automatically while minimizing tool-context use.
 
 ## Switching projects or deployments
 
@@ -51,7 +51,6 @@ The bundled server starts `uvx mcp-server-appwrite --all`. If this exposes more 
 - **Cloud authorization does not finish:** reconnect `appwrite-cloud` and complete browser consent.
 - **Self-hosted server does not start:** verify `uv`, environment variables, approved variable names, endpoint format, and API-key scopes.
 - **Wrong project appears:** disable both servers, verify the target configuration, and reconnect only the intended server.
-- **Too many tools:** replace self-hosted `--all` with specific service flags in a local copy of the power.
 
 ## Learn more
 

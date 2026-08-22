@@ -7,8 +7,7 @@
     "appwrite-self-hosted": {
       "command": "uvx",
       "args": [
-        "mcp-server-appwrite",
-        "--all"
+        "mcp-server-appwrite"
       ],
       "env": {
         "APPWRITE_PROJECT_ID": "${APPWRITE_PROJECT_ID}",
